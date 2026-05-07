@@ -8,6 +8,7 @@ using Homecare.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -37,11 +38,11 @@ namespace Homecare.Tests.Controllers
 
             var existing = new List<DateOnly>
             {
-                from.AddDays(1), // bu gün seçili kalacak
-                from.AddDays(2)  // bu gün kaldırılmaya çalışılacak
+                from.AddDays(1), // This day will stay selected.
+                from.AddDays(2)  // This day will be removed.
             };
 
-            var locked = new List<DateOnly> { from.AddDays(2) }; // kaldırılması engellensin
+            var locked = new List<DateOnly> { from.AddDays(2) }; // Prevent removal.
 
             var slotRepo = new Mock<IAvailableSlotRepository>();
             slotRepo.Setup(r => r.GetWorkDaysAsync(pid, It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
@@ -49,7 +50,7 @@ namespace Homecare.Tests.Controllers
             slotRepo.Setup(r => r.GetLockedDaysAsync(pid, It.IsAny<DateOnly>(), It.IsAny<DateOnly>()))
                     .ReturnsAsync(locked);
 
-            // RemoveRange çağrılmayacak çünkü locked
+            // RemoveRange will not be called because the day is locked.
             slotRepo.Setup(r => r.GetSlotsForPersonnelOnDayAsync(pid, It.IsAny<DateOnly>()))
                     .ReturnsAsync(new List<AvailableSlot>());
             slotRepo.Setup(r => r.RemoveRangeAsync(It.IsAny<IEnumerable<AvailableSlot>>()))
@@ -61,10 +62,14 @@ namespace Homecare.Tests.Controllers
             var apptRepo = new Mock<IAppointmentRepository>();
             var userRepo = new Mock<IUserRepository>();
 
-            var sut = new PersonnelController(apptRepo.Object, slotRepo.Object, userRepo.Object);
+            var sut = new PersonnelController(
+                apptRepo.Object,
+                slotRepo.Object,
+                userRepo.Object,
+                Mock.Of<ILogger<PersonnelController>>());
             AttachTempData(sut);
 
-            // seçilen günler: sadece existing[0] (yani 1 gün)
+            // Selected days: only existing[0], so one day.
             var daysCsv = string.Join(",", existing[0].ToString("yyyy-MM-dd"));
 
             // act
@@ -75,7 +80,7 @@ namespace Homecare.Tests.Controllers
             Assert.Equal(nameof(PersonnelController.Dashboard), rd.ActionName);
             Assert.Equal(pid, rd.RouteValues!["personnelId"]);
 
-            Assert.True(sut.TempData.ContainsKey("Error"));   // engellendi mesajı
+            Assert.True(sut.TempData.ContainsKey("Error"));   // Blocked message.
         }
 
         [Fact]
@@ -85,7 +90,7 @@ namespace Homecare.Tests.Controllers
             const int pid = 3;
             var from = DateOnly.FromDateTime(DateTime.Today).AddDays(1);
             var chosen = new[] { from, from.AddDays(1) };
-            var existing = new List<DateOnly>();     // hiç yok
+            var existing = new List<DateOnly>();     // None.
             var locked = new List<DateOnly>();     // engel yok
 
             var slotRepo = new Mock<IAvailableSlotRepository>();
@@ -99,14 +104,18 @@ namespace Homecare.Tests.Controllers
                     .Callback<IEnumerable<AvailableSlot>>(lst => added.AddRange(lst))
                     .Returns(Task.CompletedTask);
 
-            // kaldırma beklenmiyor
+            // No removal expected.
             slotRepo.Setup(r => r.RemoveRangeAsync(It.IsAny<IEnumerable<AvailableSlot>>()))
                     .Returns(Task.CompletedTask);
 
             var apptRepo = new Mock<IAppointmentRepository>();
             var userRepo = new Mock<IUserRepository>();
 
-            var sut = new PersonnelController(apptRepo.Object, slotRepo.Object, userRepo.Object);
+            var sut = new PersonnelController(
+                apptRepo.Object,
+                slotRepo.Object,
+                userRepo.Object,
+                Mock.Of<ILogger<PersonnelController>>());
             AttachTempData(sut);
 
             var csv = string.Join(",", chosen.Select(d => d.ToString("yyyy-MM-dd")));
@@ -119,7 +128,7 @@ namespace Homecare.Tests.Controllers
             Assert.Equal(nameof(PersonnelController.Dashboard), rd.ActionName);
             Assert.Equal(pid, rd.RouteValues!["personnelId"]);
 
-            // her gün için 3 preset slot
+            // Three preset slots for each day.
             Assert.Equal(chosen.Length * 3, added.Count);
             Assert.True(sut.TempData.ContainsKey("Message"));
         }

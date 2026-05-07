@@ -9,7 +9,7 @@ namespace Homecare.DAL.Interfaces
         Task<List<Appointment>> GetByClientAsync(int clientId);
         Task<List<Appointment>> GetByPersonnelAsync(int personnelId);
 
-        // ← burada tek imza kalsın
+        // Keep a single signature here.
         Task<bool> SlotIsBookedAsync(int availableSlotId, int? ignoreAppointmentId = null);
 
         Task AddAsync(Appointment a);

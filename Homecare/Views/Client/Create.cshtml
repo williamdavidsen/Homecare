@@ -121,11 +121,11 @@
     <form asp-action="Create" asp-route-clientId="@clientId" method="post" class="row g-4">
         @Html.AntiForgeryToken()
 
-        <!-- ViewModel içindeki Appointment alanlarına bağlan -->
+        <!-- Bind to Appointment fields inside the ViewModel -->
         <input type="hidden" asp-for="Appointment.ClientId" value="@clientId" />
         <input type="hidden" asp-for="Appointment.AvailableSlotId" id="AvailableSlotId" />
 
-        <!-- Sol: Takvim -->
+        <!-- Left: Calendar -->
         <div class="col-lg-7">
             <div class="cal-wrapper rounded-4">
                 <div class="cal-header">
@@ -159,7 +159,7 @@
             </div>
         </div>
 
-        <!-- Sağ: Slotlar + Task + Not -->
+        <!-- Right: Slots + Task + Notes -->
         <div class="col-lg-5">
             <div class="card mb-3">
                 <div class="card-body">
@@ -171,7 +171,7 @@
                 </div>
             </div>
 
-            <!-- Requested Task: dropdown (tek seçim) -->
+            <!-- Requested Task: dropdown (single selection) -->
             <div class="card mb-3">
                 <div class="card-body">
                     <label class="form-label">Requested Task</label>
@@ -202,10 +202,10 @@
 
 @section Scripts {
     <script>
-        // Controller'dan gelen boş günler (yyyy-MM-dd)
+        // Free days from the controller (yyyy-MM-dd).
         const FREE_DAYS = new Set(@Html.Raw(freeDaysJson));
 
-        // Seçili gün & ay bilgisi
+        // Selected day and month state.
         let current = new Date();
         let selectedDayStr = null;    // yyyy-MM-dd
         let selectedSlotId = null;

@@ -7,10 +7,10 @@ namespace Homecare.ViewModels
     {
         public Appointment Appointment { get; set; } = new Appointment();
 
-        // Edit’te tek seçimlik görev
+        // Single-select task on edit.
         public int? SelectedTaskId { get; set; }
 
-        // Dropdown içeriği
+        // Dropdown contents.
         public IEnumerable<SelectListItem> TaskSelectList { get; set; } = new List<SelectListItem>();
     }
 }

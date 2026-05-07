@@ -2,7 +2,7 @@
 @{
     ViewData["Title"] = "Appointments";
 
-    // ViewBag.ClientId güvenli okuma
+    // Safe ViewBag.ClientId read.
     int clientId = ViewBag.ClientId is int v ? v : 0;
 
     var upcoming = ViewBag.Upcoming as IEnumerable<Appointment> ?? Enumerable.Empty<Appointment>();
@@ -53,7 +53,7 @@
 <partial name="~/Views/Shared/_OwnerBar.cshtml" />
 
 <div class="container py-3">
-    <!-- ÜST BAR -->
+    <!-- TOP BAR -->
     <div class="page-bar rounded-4 px-3 py-3 d-flex align-items-center justify-content-between mb-4">
         <div class="d-flex align-items-center gap-2">
             <svg width="28" height="28" viewBox="0 0 48 48" class="text-primary">
@@ -127,7 +127,7 @@
         </div>
     }
 
-    <!-- GEÇMİŞ -->
+    <!-- PAST -->
     <h5 class="mt-4 mb-3">Past</h5>
     @if (past.Any())
     {

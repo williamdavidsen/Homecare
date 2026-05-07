@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="~/css/availability.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <style>
-        /* kilitli gün görünümü */
+        /* Locked day styling */
         .day.locked {
             background: #ffe5e5;
             border: 1px solid #f3bcbc;
@@ -17,7 +17,7 @@
 
         .day.locked::after {
             content: "\f023";
-            /* lock icon - bootstrap icons yoksa unicode kullanma */
+            /* Lock icon from Bootstrap Icons */
             font-family: "bootstrap-icons";
             position: absolute;
             right: .35rem;
@@ -82,12 +82,12 @@
 
 @section Scripts {
     <script>
-        // Server’dan gelen ön-seçili ve kilitli günler:
+        // Preselected and locked days from the server.
         const PRE_SELECTED = new Set(@Html.Raw(ViewBag.SelectedDaysJson ?? "[]"));
         const LOCKED_DAYS = new Set(@Html.Raw(ViewBag.LockedDaysJson ?? "[]"));
 
         const daysInput = document.getElementById('days');
-        const selected = new Set(PRE_SELECTED); // çalışma günleri
+        const selected = new Set(PRE_SELECTED); // Working days.
 
         const m1Title = document.getElementById('m1Title');
         const m2Title = document.getElementById('m2Title');
@@ -126,7 +126,7 @@
 
             btn.addEventListener('click', () => {
                 if (LOCKED_DAYS.has(key) && selected.has(key)) {
-                    alert('Bu gün için randevu(lar) var, kaldırılamaz. Lütfen yönetim ile iletişime geçiniz.');
+                    alert('This day has appointments and cannot be removed. Please contact an administrator.');
                     return;
                 }
                 if (selected.has(key)) {
@@ -158,7 +158,7 @@
             const first = new Date(y, m, 1);
             const last = new Date(y, m + 1, 0);
 
-            let blanks = first.getDay(); // 0=Sun
+            let blanks = first.getDay(); // 0 = Sunday.
             for (let i = 0; i < blanks; i++) {
                 const b = document.createElement('div');
                 b.className = 'day blank';
@@ -176,14 +176,14 @@
             const next = addMonths(base, 1);
             renderOneMonth(m2Grid, next, m2Title);
 
-            bigTitle.textContent = `${monthTitle(base)} — ${monthTitle(next)}`;
+            bigTitle.textContent = `${monthTitle(base)} - ${monthTitle(next)}`;
             updateHidden();
         }
 
         btnPrev.addEventListener('click', () => { base = addMonths(base, -1); render(); });
         btnNext.addEventListener('click', () => { base = addMonths(base, 1); render(); });
         document.getElementById('btnClear').addEventListener('click', () => {
-            // kilitli günler seçili kalır; diğerleri temizlenir
+            // Locked days stay selected; all other days are cleared.
             Array.from(selected).forEach(k => { if (!LOCKED_DAYS.has(k)) selected.delete(k); });
             render();
         });

@@ -12,7 +12,7 @@
     (IEnumerable<string>)(ViewBag.FreeDays ?? new List<string>())
     );
 
-    // Mevcut randevunun günü (yyyy-MM-dd) ve slot id’si
+    // Current appointment day (yyyy-MM-dd) and slot id.
     var initialDay = Model.Appointment.AvailableSlot?.Day.ToString("yyyy-MM-dd") ?? "";
     var initialSlotId = Model.Appointment.AvailableSlotId;
 }
@@ -125,7 +125,7 @@
 
     <partial name="~/Views/Shared/_Message.cshtml" />
 
-    <!-- Mevcut randevu özeti -->
+    <!-- Current appointment summary -->
     <div class="card mb-3">
         <div class="card-body">
             <h5 class="card-title mb-3">Current Appointment</h5>
@@ -160,12 +160,12 @@
     <form asp-action="Edit" method="post" class="row g-4">
         @Html.AntiForgeryToken()
 
-        <!-- ViewModel içindeki Appointment alanlarına bağlan -->
+        <!-- Bind to Appointment fields inside the ViewModel -->
         <input type="hidden" asp-for="Appointment.AppointmentId" />
         <input type="hidden" asp-for="Appointment.ClientId" value="@clientId" />
         <input type="hidden" asp-for="Appointment.AvailableSlotId" id="AvailableSlotId" />
 
-        <!-- Sol: Takvim -->
+        <!-- Left: Calendar -->
         <div class="col-lg-7">
             <div class="cal-wrapper rounded-4">
                 <div class="cal-header">
@@ -199,7 +199,7 @@
             </div>
         </div>
 
-        <!-- Sağ: Slotlar + Requested Task + Notes -->
+        <!-- Right: Slots + Requested Task + Notes -->
         <div class="col-lg-5">
             <div class="card mb-3">
                 <div class="card-body">
@@ -211,7 +211,7 @@
                 </div>
             </div>
 
-            <!-- Requested Task dropdown (tek seçim) -->
+            <!-- Requested Task dropdown (single selection) -->
             <div class="card mb-3">
                 <div class="card-body">
                     <label class="form-label">Requested Task</label>

@@ -18,7 +18,7 @@ namespace Homecare.Models
             var yesterday = DateOnly.FromDateTime(DateTime.Today.AddDays(-1));
             var tomorrow = DateOnly.FromDateTime(DateTime.Today.AddDays(1));
 
-            // Tüm hemşireler için dün ve yarın 3'er slot (09–11, 12–14, 16–18)
+            // Create three slots for every nurse for yesterday and tomorrow (09-11, 12-14, 16-18).
             var nurseIds = db.Users.Where(u => u.Role == UserRole.Personnel)
                                    .Select(u => u.UserId).ToList();
 
@@ -32,11 +32,9 @@ namespace Homecare.Models
                 }
             }
 
-            // ------------------------------
-            // ÖRNEK RANDEVULAR
-            // ------------------------------
+            // SAMPLE APPOINTMENTS
 
-            // 1) Dün (Past / Completed)
+            // 1) Yesterday (past / completed)
             UpsertAppointmentBySlot(
                 db, Slot(db, 2, yesterday, 9),
                 clientId: 10,
@@ -61,7 +59,7 @@ namespace Homecare.Models
                 taskIds: new[] { 4 }
             );
 
-            // 2) Yarın (Upcoming / Scheduled)
+            // 2) Tomorrow (upcoming / scheduled)
             UpsertAppointmentBySlot(
                 db, Slot(db, 2, tomorrow, 9),
                 clientId: 10,
@@ -89,13 +87,9 @@ namespace Homecare.Models
             db.SaveChanges();
         }
 
-        // --------------------------------------------------------------------
-        // Yardımcılar
-        // --------------------------------------------------------------------
-
         private static TimeOnly H(int hour) => new(hour, 0);
 
-        /// <summary>Slot varsa döndürür; yoksa oluşturup geri verir.</summary>
+        /// <summary>Returns an existing slot or creates one when it does not exist.</summary>
         private static AvailableSlot EnsureSlot(AppDbContext db, int nurseId, DateOnly day, int startHour, int endHour)
         {
             var start = H(startHour);
@@ -127,7 +121,7 @@ namespace Homecare.Models
             return slot;
         }
 
-        /// <summary>İstenen slot yoksa hata fırlatır (seed sırasında sorunları hemen görürsünüz).</summary>
+        /// <summary>Throws when the requested slot does not exist, so seed issues are visible immediately.</summary>
         private static AvailableSlot Slot(AppDbContext db, int nurseId, DateOnly day, int startHour)
         {
             var start = H(startHour);
@@ -137,12 +131,12 @@ namespace Homecare.Models
                 s.StartTime == start);
 
             return slot ?? throw new InvalidOperationException(
-                $"Seed: Slot bulunamadı. Nurse:{nurseId}, Day:{day}, Start:{start}");
+                $"Seed: Slot not found. Nurse:{nurseId}, Day:{day}, Start:{start}");
         }
 
         /// <summary>
-        /// Aynı slot için randevu varsa günceller, yoksa oluşturur.
-        /// (Appointments.AvailableSlotId UNIQUE hatasını engeller)
+        /// Updates the appointment for the same slot when it exists, otherwise creates it.
+        /// This prevents Appointments.AvailableSlotId UNIQUE constraint errors.
         /// </summary>
         private static Appointment UpsertAppointmentBySlot(
             AppDbContext db,
@@ -167,7 +161,7 @@ namespace Homecare.Models
                     CreatedAt = DateTime.UtcNow
                 };
                 db.Appointments.Add(appt);
-                db.SaveChanges(); // Id için
+                db.SaveChanges(); // Required for the generated id.
             }
             else
             {
@@ -177,7 +171,7 @@ namespace Homecare.Models
                 db.SaveChanges();
             }
 
-            // TaskList’i tazele
+            // Refresh task links.
             var existing = db.TaskLists.Where(t => t.AppointmentId == appt.AppointmentId).ToList();
             if (existing.Count > 0)
             {

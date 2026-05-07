@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 
-    @await RenderSectionAsync("Styles", required: false) <!-- Styles section'ını render et -->
+    @await RenderSectionAsync("Styles", required: false) <!-- Render the Styles section. -->
 
     <style>
         html,
@@ -56,7 +56,7 @@
                                 asp-action="Table">Appointments</a></li>
                     </ul>
 
-                    <!-- Hızlı rol linkleri (LOGIN YOKKEN TEST İÇİN) -->
+                    <!-- Quick role links for testing without login. -->
                     <div class="d-flex gap-2">
                         <a class="btn btn-outline-primary btn-sm" asp-controller="Client" asp-action="Dashboard"
                             asp-route-clientId="10">

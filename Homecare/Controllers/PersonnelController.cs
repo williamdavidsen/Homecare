@@ -156,7 +156,7 @@ namespace Homecare.Controllers
                         var slots = await _slotRepo.GetSlotsForPersonnelOnDayAsync(personnelId, day)
                                     ?? Enumerable.Empty<AvailableSlot>();
 
-                        // güvenlik: randevulu slot varsa bu günü de bloke et
+                        // Safety check: block the day if any slot has an appointment.
                         if (slots.Any(s => s.Appointment != null))
                         {
                             if (!blocked.Contains(day))

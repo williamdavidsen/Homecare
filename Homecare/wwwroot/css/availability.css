@@ -6,7 +6,7 @@
   border: 1px solid #eef2f6;
 }
 
-/* BAŞLIK ve NAV */
+/* HEADER AND NAV */
 .cal-top {
   display: grid;
   grid-template-columns: 40px 1fr 40px;
@@ -36,7 +36,7 @@
 }
 .cal-nav:hover { background: #eef2ff; }
 
-/* İKİ AY KUTUSU */
+/* TWO-MONTH CONTAINER */
 .two-month {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -47,7 +47,7 @@
   min-width: 280px;
 }
 
-/* AY BAŞLIĞI */
+/* MONTH HEADER */
 .month h5 {
   font-weight: 700;
   font-size: 1.05rem;
@@ -69,7 +69,7 @@
   text-align: center;
 }
 
-/* GÜN BUTONLARI */
+/* DAY BUTTONS */
 .day {
   border: 0;
   height: 44px;

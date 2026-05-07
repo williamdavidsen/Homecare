@@ -55,7 +55,7 @@ namespace Homecare.Controllers
                     return NotFound();
                 }
 
-                // Back butonu için geldiği yer bilgisi (opsiyonel)
+                // Optional source page for the Back button.
                 ViewBag.ReturnTo = Request.Headers["Referer"].ToString();
                 return View(a);
             }
@@ -128,14 +128,14 @@ namespace Homecare.Controllers
                 var a = await _apptRepo.GetAsync(id);
                 if (a == null) return NotFound();
 
-                // Takvim için boş günler
+                // Free days for the calendar.
                 var freeDays = await _slotRepo.GetFreeDaysAsync();
                 ViewBag.FreeDays = freeDays.Select(d => d.ToString("yyyy-MM-dd")).ToList();
 
-                // Mevcut tekli görev (varsa)
+                // Existing single task, when present.
                 int? selectedTaskId = a.Tasks?.Select(t => t.CareTaskId).FirstOrDefault();
 
-                // Dropdown için seçenekler
+                // Dropdown options.
                 var tasks = await _taskRepo.GetAllAsync();
                 var selectList = tasks.Select(t => new SelectListItem
                 {
@@ -151,7 +151,7 @@ namespace Homecare.Controllers
                     TaskSelectList = selectList
                 };
 
-                return View(vm); // <-- ViewModel
+                return View(vm);
             }
             catch (Exception ex)
             {
@@ -161,7 +161,6 @@ namespace Homecare.Controllers
             }
         }
 
-        // --- EDIT (POST) -> ViewModel al ---
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AppointmentEditViewModel vm)
         {
@@ -169,7 +168,7 @@ namespace Homecare.Controllers
             {
                 var model = vm.Appointment;
 
-                // Seçilen slot başka biri tarafından alındı mı?
+                // Check whether the selected slot was booked by someone else.
                 if (await _apptRepo.SlotIsBookedAsync(model.AvailableSlotId, model.AppointmentId))
                 {
                     ModelState.AddModelError(nameof(vm.Appointment.AvailableSlotId),
@@ -184,7 +183,7 @@ namespace Homecare.Controllers
 
                 await _apptRepo.UpdateAsync(model);
 
-                // Tek seçimli "Requested Task"ı güncelle
+                // Update the single-select Requested Task.
                 if (vm.SelectedTaskId.HasValue)
                     await _apptRepo.ReplaceTasksAsync(model.AppointmentId, new[] { vm.SelectedTaskId.Value });
                 else
@@ -201,7 +200,6 @@ namespace Homecare.Controllers
             }
         }
 
-        // Hata durumunda formu yeniden doldur
         private async Task<IActionResult> RefillEditFormVM(AppointmentEditViewModel vm)
         {
             var freeDays = await _slotRepo.GetFreeDaysAsync();
@@ -217,6 +215,7 @@ namespace Homecare.Controllers
 
             return View("Edit", vm);
         }
+
         [HttpGet]
         public async Task<IActionResult> Delete(int id)
         {

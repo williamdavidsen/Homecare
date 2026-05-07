@@ -1,6 +1,6 @@
 namespace Homecare.Models
 {
-    // Appointment ↔ CareTask çok-çok ilişkisi
+    // Appointment-to-CareTask many-to-many relationship.
     public class TaskList
     {
         public int AppointmentId { get; set; }

@@ -1,0 +1,11 @@
+Using launch settings from Homecare\Properties\launchSettings.json...
+Building...
+[Homecare] SQLite -> Data Source=D:\PROJELER\Homecare\Homecare\Homecare\App_Data\homecare.db
+info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5003
+info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Development
+info: Microsoft.Hosting.Lifetime[0]
+      Content root path: D:\PROJELER\Homecare\Homecare\Homecare

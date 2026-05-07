@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ca\\Desktop\\Oslomet\\ITPE3200\\Homecare\\webprogrammering2025-main\\Homecare\\Homecare.csproj": {}
+    "D:\\PROJELER\\Homecare\\Homecare\\Homecare\\Homecare.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ca\\Desktop\\Oslomet\\ITPE3200\\Homecare\\webprogrammering2025-main\\Homecare\\Homecare.csproj": {
+    "D:\\PROJELER\\Homecare\\Homecare\\Homecare\\Homecare.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ca\\Desktop\\Oslomet\\ITPE3200\\Homecare\\webprogrammering2025-main\\Homecare\\Homecare.csproj",
+        "projectUniqueName": "D:\\PROJELER\\Homecare\\Homecare\\Homecare\\Homecare.csproj",
         "projectName": "Homecare",
-        "projectPath": "C:\\Users\\ca\\Desktop\\Oslomet\\ITPE3200\\Homecare\\webprogrammering2025-main\\Homecare\\Homecare.csproj",
-        "packagesPath": "C:\\Users\\ca\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ca\\Desktop\\Oslomet\\ITPE3200\\Homecare\\webprogrammering2025-main\\Homecare\\obj\\",
+        "projectPath": "D:\\PROJELER\\Homecare\\Homecare\\Homecare\\Homecare.csproj",
+        "packagesPath": "C:\\Users\\saski\\.nuget\\packages\\",
+        "outputPath": "D:\\PROJELER\\Homecare\\Homecare\\Homecare\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\ca\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\saski\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -38,7 +38,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net8.0": {
@@ -102,7 +102,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.203/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

@@ -30,7 +30,6 @@ namespace Homecare.Controllers
             _logger = logger;
         }
 
-        // ---- Helper: clientId yoksa ilk müşteriyi bul ----
         private async Task<int> ResolveClientId(int? clientId)
         {
             if (clientId.HasValue) return clientId.Value;
@@ -46,8 +45,6 @@ namespace Homecare.Controllers
             ViewBag.OwnerRole = "Client";
         }
 
-        // ----------------- DASHBOARD -----------------
-        // /Client/Dashboard  veya  /Client/Dashboard/10
         [HttpGet("Dashboard/{clientId:int?}")]
         public async Task<IActionResult> Dashboard(int? clientId)
         {
@@ -84,8 +81,6 @@ namespace Homecare.Controllers
             }
         }
 
-        // ----------------- CREATE (GET) -----------------
-        // /Client/Create/10   (day querystring ile gelebilir)
         [HttpGet("Create/{clientId:int}")]
         public async Task<IActionResult> Create(int clientId, string? day = null)
         {
@@ -94,13 +89,13 @@ namespace Homecare.Controllers
                 await SetOwnerForClientAsync(clientId);
                 ViewBag.ClientId = clientId;
 
-                // 1) Takvim için boş (free) günler
-                var freeDays = await _slotRepo.GetFreeDaysAsync(); // List<DateOnly>
+                // Free days for the calendar.
+                var freeDays = await _slotRepo.GetFreeDaysAsync();
                 ViewBag.FreeDays = freeDays.Select(d => d.ToString("yyyy-MM-dd")).ToList();
                 ViewBag.InitialMonth = (freeDays.Any() ? freeDays.Min() : DateOnly.FromDateTime(DateTime.Today))
                                         .ToString("yyyy-MM-01");
 
-                // (Opsiyonel) Eski dropdown fallback
+                // Optional legacy dropdown fallback.
                 var freeSet = freeDays.ToHashSet();
                 const int rangeDays = 14;
                 var start = DateOnly.FromDateTime(DateTime.Today);
@@ -127,7 +122,7 @@ namespace Homecare.Controllers
                     ViewBag.SlotItems = new List<SelectListItem>();
                 }
 
-                // 2) Dropdown (tek seçim) için görevler
+                // Care task dropdown.
                 var tasks = await _taskRepo.GetAllAsync();
                 var vm = new AppointmentCreateViewModel
                 {
@@ -151,8 +146,6 @@ namespace Homecare.Controllers
             }
         }
 
-        // ----------------- CREATE (POST) -----------------
-        // /Client/Create/{clientId}  → POST
         [HttpPost("Create/{clientId:int}"), ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(int clientId, AppointmentCreateViewModel vm)
         {
@@ -160,7 +153,6 @@ namespace Homecare.Controllers
             {
                 vm.Appointment.ClientId = clientId;
 
-                // Slot halen uygun mu?
                 if (await _apptRepo.SlotIsBookedAsync(vm.Appointment.AvailableSlotId))
                 {
                     ModelState.AddModelError(nameof(vm.Appointment.AvailableSlotId),
@@ -171,10 +163,6 @@ namespace Homecare.Controllers
                     return await RefillCreateFormVM(clientId, vm);
 
                 await _apptRepo.AddAsync(vm.Appointment);
-
-                // (İsteğe bağlı tek task kaydı)
-                // if (vm.SelectedTaskId.HasValue)
-                //     await _apptRepo.ReplaceTasksAsync(vm.Appointment.AppointmentId, new[] { vm.SelectedTaskId.Value });
 
                 TempData["Message"] = "Appointment booked.";
                 return RedirectToAction(nameof(Dashboard), new { clientId });
@@ -189,7 +177,6 @@ namespace Homecare.Controllers
 
         private async Task<IActionResult> RefillCreateFormVM(int clientId, AppointmentCreateViewModel vm)
         {
-            // formu yeniden doldur
             ViewBag.ClientId = clientId;
 
             var freeDays = await _slotRepo.GetFreeDaysAsync();
@@ -220,8 +207,6 @@ namespace Homecare.Controllers
             return View("Create", vm);
         }
 
-        // ----------------- AJAX: seçilen günün boş slotlarını getir -----------------
-        // /Client/SlotsForDay?day=2025-10-21
         [HttpGet("SlotsForDay")]
         public async Task<IActionResult> SlotsForDay(string day)
         {

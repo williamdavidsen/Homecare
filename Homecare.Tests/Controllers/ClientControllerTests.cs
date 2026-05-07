@@ -9,6 +9,7 @@ using Homecare.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -22,7 +23,12 @@ namespace Homecare.Tests.Controllers
             Mock<IUserRepository> userRepo,
             Mock<ICareTaskRepository> taskRepo)
         {
-            var sut = new ClientController(apptRepo.Object, slotRepo.Object, userRepo.Object, taskRepo.Object);
+            var sut = new ClientController(
+                apptRepo.Object,
+                slotRepo.Object,
+                userRepo.Object,
+                taskRepo.Object,
+                Mock.Of<ILogger<ClientController>>());
             sut.TempData = new TempDataDictionary(new DefaultHttpContext(), Mock.Of<ITempDataProvider>());
             return sut;
         }
@@ -110,7 +116,7 @@ namespace Homecare.Tests.Controllers
             // assert
             var rd = Assert.IsType<RedirectToActionResult>(result);
             Assert.Equal(nameof(ClientController.Dashboard), rd.ActionName);
-            // Aynı controller’dan redirect’te ControllerName null döner (geçerli)
+            // Redirects within the same controller can return a null ControllerName.
             Assert.True(rd.ControllerName is null || rd.ControllerName == "Client");
             Assert.Equal(clientId, rd.RouteValues!["clientId"]);
 

@@ -1,4 +1,4 @@
-@* Kibar kimlik şeridi: isim + rol *@
+@* Compact identity bar: name and role. *@
 @{
     var name = (string)(ViewBag.OwnerName ?? User?.Identity?.Name ?? "User");
     var role = (string)(ViewBag.OwnerRole ?? "");

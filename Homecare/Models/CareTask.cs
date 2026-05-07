@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Homecare.Models
 {
-    // 'Task' adı System.Threading ile karışmasın diye CareTask
+    // CareTask avoids confusion with System.Threading.Task.
     public class CareTask
     {
         public int CareTaskId { get; set; }

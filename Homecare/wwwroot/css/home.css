@@ -5,7 +5,7 @@
     --hc-surface: #f8fafc;
     --hc-shadow: 0 10px 20px rgba(0, 0, 0, .08);
 
-    /* Carousel yükseklikleri */
+    /* Carousel heights */
     --c-h-xs: 240px;
     --c-h-sm: 300px;
     --c-h-md: 360px;
@@ -110,7 +110,7 @@
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, .2));
 }
 
-/* REDUCED MOTION (erişilebilirlik) */
+/* REDUCED MOTION (accessibility) */
 @media (prefers-reduced-motion: reduce) {
     .carousel-item {
         transition: none !important;

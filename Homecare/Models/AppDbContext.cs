@@ -32,7 +32,7 @@ namespace Homecare.Models
                  .HasForeignKey(s => s.PersonnelId)
                  .OnDelete(DeleteBehavior.Restrict);
 
-                // Aynı personel aynı gün aynı saat aralığını tekrar açamasın
+                // Prevent the same personnel from opening the same time range twice on the same day.
                 e.HasIndex(x => new { x.PersonnelId, x.Day, x.StartTime, x.EndTime }).IsUnique();
                 e.ToTable(tb => tb.HasCheckConstraint("CK_AvailableSlot_TimeRange", "[EndTime] > [StartTime]"));
             });
@@ -56,7 +56,7 @@ namespace Homecare.Models
                 e.HasIndex(a => a.AvailableSlotId).IsUnique();
             });
 
-            // CareTask (tablo adı 'Task' da yapabilirdik; default kalsın)
+            // CareTask keeps the default table name.
             b.Entity<CareTask>(e =>
             {
                 e.Property(t => t.Description).HasMaxLength(300).IsRequired();

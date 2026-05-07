@@ -12,16 +12,18 @@ namespace Homecare.Controllers
         private readonly IAppointmentRepository _apptRepo;
 
         public AvailableSlotController(IAvailableSlotRepository slotRepo, IUserRepository userRepo, IAppointmentRepository apptRepo)
-        { _slotRepo = slotRepo; _userRepo = userRepo; _apptRepo = apptRepo; }
+        {
+            _slotRepo = slotRepo;
+            _userRepo = userRepo;
+            _apptRepo = apptRepo;
+        }
 
-        // LIST
         public async Task<IActionResult> Table()
         {
             var slots = await _slotRepo.GetAllAsync();
             return View(slots);
         }
 
-        // DETAILS
         public async Task<IActionResult> Details(int id)
         {
             var s = await _slotRepo.GetAsync(id);
@@ -29,7 +31,6 @@ namespace Homecare.Controllers
             return View(s);
         }
 
-        // CREATE GET
         public async Task<IActionResult> Create()
         {
             var personnels = await _userRepo.GetByRoleAsync(UserRole.Personnel);
@@ -42,7 +43,6 @@ namespace Homecare.Controllers
             });
         }
 
-        // CREATE POST
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(AvailableSlot model)
         {
@@ -62,7 +62,6 @@ namespace Homecare.Controllers
             return RedirectToAction(nameof(Table));
         }
 
-        // EDIT GET
         public async Task<IActionResult> Edit(int id)
         {
             var a = await _apptRepo.GetAsync(id);
@@ -76,7 +75,6 @@ namespace Homecare.Controllers
             return View(a);
         }
 
-        // EDIT POST
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(AvailableSlot model)
         {
@@ -86,7 +84,7 @@ namespace Homecare.Controllers
             if (model.EndTime <= model.StartTime)
                 ModelState.AddModelError(nameof(model.EndTime), "End time must be after start time.");
 
-            // Eğer değişiklik aynı slotu duplike ediyorsa engelle
+            // Prevent updates that duplicate the same slot.
             if (await _slotRepo.ExistsAsync(model.PersonnelId, model.Day, model.StartTime, model.EndTime))
             {
                 ModelState.AddModelError("", "Another slot with same time exists for this personnel.");
@@ -98,7 +96,6 @@ namespace Homecare.Controllers
             return RedirectToAction(nameof(Table));
         }
 
-        // DELETE GET
         public async Task<IActionResult> Delete(int id)
         {
             var s = await _slotRepo.GetAsync(id);
@@ -106,7 +103,6 @@ namespace Homecare.Controllers
             return View(s);
         }
 
-        // DELETE POST
         [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {

@@ -14,10 +14,10 @@ namespace Homecare.DAL.Interfaces
         Task UpdateAsync(AvailableSlot slot);
         Task DeleteAsync(AvailableSlot slot);
         Task<bool> ExistsAsync(int personnelId, DateOnly day, TimeOnly start, TimeOnly end);
-        // Belirli hemşirenin belirtilen aralıkta slotu bulunan günleri (distinct)
+        // Distinct days where the given personnel has slots in the requested range.
         Task<List<DateOnly>> GetWorkDaysAsync(int personnelId, DateOnly from, DateOnly to);
 
-        // Belirli hemşirenin belirtilen aralıkta randevusu bulunan günleri (distinct, kilitli)
+        // Distinct locked days where the given personnel has appointments in the requested range.
         Task<List<DateOnly>> GetLockedDaysAsync(int personnelId, DateOnly from, DateOnly to);
 
         Task<List<AvailableSlot>> GetSlotsForPersonnelOnDayAsync(int personnelId, DateOnly day);

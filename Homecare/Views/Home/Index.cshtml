@@ -7,7 +7,6 @@
 }
 
 <div class="hc-hero">
-
     <!-- HERO CAROUSEL -->
     <div id="homeCarousel" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-indicators">
@@ -20,15 +19,14 @@
         <div class="carousel-inner">
             <!-- Slide 1 -->
             <div class="carousel-item active">
-                <img src="~/images/hero-client.jpg" alt="Book & manage" />
+                <img src="~/images/hero-client.jpg" alt="Book and manage appointments" />
                 <div class="carousel-caption text-start">
-                    <h1 class="hc-title text-white">Randevunu kolayca oluştur, yönet.</h1>
-                    <p class="hc-sub text-white-50">Evde bakım randevularını saniyeler içinde planla, değiştir ya da
-                        iptal et.</p>
+                    <h1 class="hc-title text-white">Book and manage care visits with ease.</h1>
+                    <p class="hc-sub text-white-50">Schedule, update, or cancel home care appointments in seconds.</p>
                     <a class="btn btn-primary btn-lg me-2" asp-controller="Client" asp-action="Dashboard"
-                        asp-route-clientId="10">Hemen Başla</a>
-                    <a class="btn btn-outline-light btn-lg" asp-controller="AvailableSlot" asp-action="Table">Uygun
-                        Günlere Göz At</a>
+                        asp-route-clientId="10">Get Started</a>
+                    <a class="btn btn-outline-light btn-lg" asp-controller="AvailableSlot" asp-action="Table">Browse
+                        Available Days</a>
                 </div>
             </div>
 
@@ -36,10 +34,10 @@
             <div class="carousel-item">
                 <img src="~/images/hero-nurse.jpg" alt="Personnel fast planning" />
                 <div class="carousel-caption text-start">
-                    <h2 class="hc-title text-white">Hemşireler için hızlı planlama.</h2>
-                    <p class="hc-sub text-white-50">Bir gün seç; sistem otomatik 3 slot açsın: sabah, öğle, akşam.</p>
+                    <h2 class="hc-title text-white">Fast planning for care staff.</h2>
+                    <p class="hc-sub text-white-50">Choose a day and automatically create three time slots: morning, midday, and evening.</p>
                     <a class="btn btn-light btn-lg text-primary fw-semibold" asp-controller="Personnel"
-                        asp-action="Dashboard" asp-route-personnelId="2">Personel Paneli</a>
+                        asp-action="Dashboard" asp-route-personnelId="2">Personnel Dashboard</a>
                 </div>
             </div>
 
@@ -47,8 +45,8 @@
             <div class="carousel-item">
                 <img src="~/images/hero-admin.jpg" alt="Admin control" />
                 <div class="carousel-caption text-start">
-                    <h2 class="hc-title text-white">Yöneticiler için uçtan uca kontrol.</h2>
-                    <p class="hc-sub text-white-50">Slotlar, randevular ve kullanıcılar tek panelde.</p>
+                    <h2 class="hc-title text-white">End-to-end control for administrators.</h2>
+                    <p class="hc-sub text-white-50">Manage slots, appointments, and users from one dashboard.</p>
                     <a class="btn btn-primary btn-lg" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
                 </div>
             </div>
@@ -56,11 +54,11 @@
 
         <button class="carousel-control-prev" type="button" data-bs-target="#homeCarousel" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Önceki</span>
+            <span class="visually-hidden">Previous</span>
         </button>
         <button class="carousel-control-next" type="button" data-bs-target="#homeCarousel" data-bs-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Sonraki</span>
+            <span class="visually-hidden">Next</span>
         </button>
     </div>
 </div>
@@ -68,8 +66,8 @@
 <!-- ROLES -->
 <section class="py-4">
     <div class="text-center mb-4">
-        <h2 class="hc-title">Hangi Rol ile Devam Etmek İstersiniz?</h2>
-        <p class="hc-sub">İhtiyacınıza göre deneyimi kişiselleştirin.</p>
+        <h2 class="hc-title">Choose Your Role</h2>
+        <p class="hc-sub">Continue with the experience that fits your needs.</p>
     </div>
 
     <div class="row g-4">
@@ -78,16 +76,16 @@
             <div class="hc-role-card h-100 d-flex flex-column">
                 <div class="d-flex align-items-center mb-2">
                     <span class="hc-role-icon"><i class="bi bi-person-heart"></i></span>
-                    <h5 class="mb-0">Hasta / Yaşlı</h5>
+                    <h5 class="mb-0">Client</h5>
                 </div>
                 <p class="text-muted">
-                    Randevularını oluştur, görüntüle ve yönet. İhtiyacın olan hizmetleri seç.
+                    Create, view, and manage appointments. Choose the care services you need.
                 </p>
                 <div class="mt-auto d-grid gap-2">
                     <a class="btn btn-primary" asp-controller="Client" asp-action="Dashboard"
-                        asp-route-clientId="10">Hasta Olarak Devam Et</a>
+                        asp-route-clientId="10">Continue as Client</a>
                     <a class="btn btn-outline-secondary" asp-controller="Client" asp-action="Create"
-                        asp-route-clientId="10">Yeni Randevu Oluştur</a>
+                        asp-route-clientId="10">Create New Appointment</a>
                 </div>
             </div>
         </div>
@@ -97,14 +95,14 @@
             <div class="hc-role-card h-100 d-flex flex-column">
                 <div class="d-flex align-items-center mb-2">
                     <span class="hc-role-icon"><i class="bi bi-person-workspace"></i></span>
-                    <h5 class="mb-0">Hemşire / Personel</h5>
+                    <h5 class="mb-0">Care Personnel</h5>
                 </div>
-                <p class="text-muted">Müsait günlerini işaretle; sistem sabah–öğle–akşam 3 slot açsın.</p>
+                <p class="text-muted">Mark available days and let the system create three daily slots.</p>
                 <div class="mt-auto d-grid gap-2">
                     <a class="btn btn-primary" asp-controller="Personnel" asp-action="Dashboard"
-                        asp-route-personnelId="2">Personel Paneline Git</a>
+                        asp-route-personnelId="2">Go to Personnel Dashboard</a>
                     <a class="btn btn-outline-secondary" asp-controller="Personnel" asp-action="CreateDay"
-                        asp-route-personnelId="2">Gün Oluştur (3 Slot)</a>
+                        asp-route-personnelId="2">Create Working Days</a>
                 </div>
             </div>
         </div>
@@ -116,14 +114,14 @@
                     <span class="hc-role-icon"><i class="bi bi-shield-lock"></i></span>
                     <h5 class="mb-0">Admin</h5>
                 </div>
-                <p class="text-muted">Slotlar ve randevular üzerinde tam yetki. Sistemi tek ekrandan izle.</p>
+                <p class="text-muted">Monitor slots and appointments with full administrative access.</p>
                 <div class="mt-auto d-grid gap-2">
                     <a class="btn btn-primary" asp-controller="Admin" asp-action="Dashboard">Admin Dashboard</a>
                     <div class="d-flex gap-2">
                         <a class="btn btn-outline-secondary flex-fill" asp-controller="AvailableSlot"
-                            asp-action="Table">Slotlar</a>
+                            asp-action="Table">Slots</a>
                         <a class="btn btn-outline-secondary flex-fill" asp-controller="Appointment"
-                            asp-action="Table">Randevular</a>
+                            asp-action="Table">Appointments</a>
                     </div>
                 </div>
             </div>
@@ -133,7 +131,7 @@
 
 @section Scripts {
     <script>
-        // Carousel hız/ayarı (isteğe bağlı)
+        // Optional carousel timing.
         const hc = document.getElementById('homeCarousel');
         if (hc) new bootstrap.Carousel(hc, { interval: 5000, pause: 'hover', wrap: true });
     </script>
